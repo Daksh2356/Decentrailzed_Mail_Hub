@@ -5,7 +5,7 @@ function App() {
   const [cid, setCid] = useState(null);
 
   const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFile(event.target.files);
   };
 
   const handleSubmission = async () => {
@@ -13,11 +13,9 @@ function App() {
       const formData = new FormData();
       Array.from(selectedFile).forEach((file) => {
         formData.append("file", file);
+        // including nname of file in metadata
+        formData.append("pinataMetadata", JSON.stringify({ name: file.name }));
       });
-      const metadata = JSON.stringify({
-        name: "File name",
-      });
-      formData.append("pinataMetadata", metadata);
 
       const options = JSON.stringify({
         cidVersion: 0,
@@ -35,9 +33,11 @@ function App() {
         }
       );
       const resData = await res.json();
-      setCid(resData.Ipfshash)
+      setCid(resData.IpfsHash);
+      console.log(resData.IpfsHash);
       console.log(formData);
-      console.log(resData);
+      console.log("response: ", resData);
+      console.log(`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`);
     } catch (error) {
       console.log(error);
     }
@@ -45,23 +45,31 @@ function App() {
 
   return (
     <>
-    <div className="form-container">
-      <label htmlFor="ipfsFile" className="form-label">Choose File : </label>
-      <input
-        type="file"
-        onChange={changeHandler}
-        multiple
-        id="ipfsFile"
-        accept=".jpg, .jpeg, .png, .gif"
-      />
-      <button onClick={handleSubmission}>Submit</button>
-      {cid && (
-        <img
-          src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
-          alt="ipfs image"
-        />
-      )}
-    </div>
+      <div className="form-container">
+        <div className="input_area">
+          <label htmlFor="ipfsFile" className="form-label">
+            Choose File :{" "}
+          </label>
+          <input
+            type="file"
+            onChange={changeHandler}
+            multiple
+            id="ipfsFile"
+            accept=".jpg, .jpeg, .png, .gif"
+          />
+          <button onClick={handleSubmission}>Submit</button>
+        </div>
+
+        {cid && (
+          <div className="image_area">
+            <img
+              src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
+              alt="ipfs image"
+              height={200}
+            />
+          </div>
+        )}
+      </div>
     </>
   );
 }
