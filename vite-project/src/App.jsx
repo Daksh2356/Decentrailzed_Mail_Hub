@@ -7,9 +7,7 @@ function App() {
   useEffect(() => {
     setCid(null); // Initialize cid state to null when component mounts
     setSelectedFile(null); // Initialize selectedFile state to null when component mounts
-
   }, []);
-
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files);
@@ -52,6 +50,9 @@ function App() {
 
   return (
     <>
+      <div className="absolute h-[100px] w-full bg-sky-500" >
+        <img className="m-auto h-full p-2 rounded-full" src="../src/assets/logo.jpg"/>
+        </div>
       <div className="flex flex-col gap-16 items-center justify-center h-screen text-2xl">
         <h1 className="pt-5 text-3xl">
           Multiple Usecases of Decentralized Storage Protocols
@@ -75,7 +76,7 @@ function App() {
           </button>
         </div>
 
-        {cid!==null && (
+        {cid !== null && (
           <div className="p-3 border-2 border-red-700 rounded-lg text-base">
             <img
               src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
@@ -85,7 +86,9 @@ function App() {
             <div className="p-1 text-center">Your IPFS hash: {cid} </div>
             <div className="p-1 text-center">
               {" "}
-              <a href={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}>Click here to see the uploaded image!!</a>{" "}
+              <a href={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}>
+                Click here to see the uploaded image!!
+              </a>{" "}
             </div>
           </div>
         )}
