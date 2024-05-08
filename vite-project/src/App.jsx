@@ -97,7 +97,7 @@ function App() {
               <div className="p-1 text-center">
                 {" "}
                 <a
-                  className=""
+                  target="_blank"
                   href={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
                 >
                   Click here to see the uploaded image!!
